@@ -1,0 +1,25 @@
+{
+  "name": "osv-final-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gepron1x/osv-final-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gepron1x/osv-final-project/issues"
+  },
+  "homepage": "https://github.com/gepron1x/osv-final-project#readme",
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "htmlhint": "^1.8.0"
+  }
+}
