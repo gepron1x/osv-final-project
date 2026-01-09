@@ -15,25 +15,13 @@ const coursesList = document.getElementById('courses-list');
 const paginationContainer = document.getElementById('courses-pagination');
 const searchForm = document.getElementById('course-search-form');
 
-
-async function onLoad() {
-
-    await fetchCourses();
-    await fetchTutors();
-
-    renderCourses();
-    renderPagination();
-
-    renderTutors();
-}
-
 function showAlert(message, type = 'success') {
     const container = document.getElementById('alerts-container');
     const alert = `
-        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
     `;
     container.innerHTML = alert;
     setTimeout(() => {
@@ -111,7 +99,8 @@ function renderPagination() {
 
 
 function handleSearch() {
-    const nameQuery = document.getElementById('course-name').value.toLowerCase();
+    const nameQuery = document.getElementById('course-name').value
+        .toLowerCase();
     const levelQuery = document.getElementById('course-level').value;
 
     filteredCourses = allCourses.filter(course => {
@@ -126,15 +115,13 @@ function handleSearch() {
 }
 
 function handleCourseOrder(event) {
-    if(!event.target.classList.contains("order-course-btn")) return;
+    if (!event.target.classList.contains("order-course-btn")) return;
     const parent = event.target.closest('.course-item');
     const courseId = parent.dataset.courseid;
     const course = allCourses.find(course => courseId == course.id);
     console.log(courseId);
     openEnrollmentModal(course);
 }
-
-
 
 async function fetchTutors() {
     try {
@@ -151,7 +138,8 @@ function renderTutors() {
     container.innerHTML = '';
 
     if (filteredTutors.length === 0) {
-        container.innerHTML = '<tr><td colspan="6" class="text-center">No tutors found matching your criteria.</td></tr>';
+        container.innerHTML = 
+        '<tr><td colspan="6" class="text-center">No tutors found matching your criteria.</td></tr>';
         return;
     }
 
@@ -186,9 +174,23 @@ function handleTutorSearch() {
     renderTutors();
 }
 
+async function onLoad() {
+
+    await fetchCourses();
+    await fetchTutors();
+
+    renderCourses();
+    renderPagination();
+
+    renderTutors();
+}
+
 // Event Listeners
-document.querySelector('#courses-list').addEventListener('click', handleCourseOrder);
-document.querySelector('#course-search-form button').addEventListener('click', handleSearch);
-document.querySelector('#tutor-filter-form button').addEventListener('click', handleTutorSearch);
+document.querySelector('#courses-list')
+    .addEventListener('click', handleCourseOrder);
+document.querySelector('#course-search-form button')
+    .addEventListener('click', handleSearch);
+document.querySelector('#tutor-filter-form button')
+    .addEventListener('click', handleTutorSearch);
 // Initialize
 document.addEventListener('DOMContentLoaded', onLoad);
