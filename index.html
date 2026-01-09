@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Russian Language School</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <span>Learn Russian</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#tutors">Tutors</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contacts">Contacts</a></li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-light ms-lg-3" href="orders.html">User Account</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="alerts-container" class="container mt-3" style="min-height: 50px;">
+        <div class="alert alert-info alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-search me-2"></i>
+            <strong>Welcome!</strong> Ready to start your journey? <a href="#courses" class="alert-link">Find your course now</a> and meet our professional tutors.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        </div>
+
+    <main>
+        <section id="about" class="py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h1 class="display-4 fw-bold">Learn Russian with native speakers</h1>
+                        <p class="lead text-muted">Our mission is to bridge cultures through language. We provide high-quality educational programs tailored to your goals, whether for business, travel, or personal growth.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="assets/img/russia.webp" class="img-fluid rounded shadow" alt="Russia">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5">Why Learn a Foreign Language?</h2>
+                <div class="row g-4 text-center">
+                    <div class="col-md-4">
+                        <div class="p-4 border rounded bg-white h-100">
+                            <h3>Cognitive Boost</h3>
+                            <p>Learning a language improves memory, multitasking skills, and keeps your brain sharp.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border rounded bg-white h-100">
+                            <h3>Career Growth</h3>
+                            <p>Expand your professional opportunities and stand out in the global job market.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border rounded bg-white h-100">
+                            <h3>Cultural Connection</h3>
+                            <p>Understand history and traditions more deeply by speaking the native tongue.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="courses" class="py-5">
+            <div class="container">
+                <h2 class="mb-4">Our Courses</h2>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form id="course-search-form" class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Search by name</label>
+                                <input type="text" id="course-name" class="form-control" placeholder="e.g. Intensive Russian">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Level</label>
+                                <select id="course-level" class="form-select">
+                                    <option value="">All Levels</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary w-100">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-3 g-4" id="courses-list">
+                    </div>
+
+                <nav class="mt-5">
+                    <ul class="pagination justify-content-center" id="courses-pagination">
+                        </ul>
+                </nav>
+            </div>
+        </section>
+
+        <section id="tutors" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="mb-4">Find Your Tutor</h2>
+
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <form id="tutor-filter-form" class="row g-3">
+                            <div class="col-md-5">
+                                <label class="form-label">Qualification</label>
+                                <select class="form-select" id="tutor-qualification">
+                                    <option value="">Any Qualification</option>
+                                    <option value="native">Native Speaker</option>
+                                    <option value="certified">Certified Teacher</option>
+                                    <option value="professor">University Professor</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Experience (Years)</label>
+                                <input type="number" class="form-control" id="tutor-experience" placeholder="Minimum years">
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="button" class="btn btn-dark w-100">Filter Tutors</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover bg-white rounded shadow-sm">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Level</th>
+                                <th>Experience</th>
+                                <th>Rate (RUB/h)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tutors-list">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contacts" class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h5>Learn Russian School</h5>
+                    <p>Pushkina st. dom Kolotushkina, Moscow, Russia<br>
+                    Phone: 8 800 555 35 35<br>
+                    Email: contact@learnrussian.ru</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Our Social Media</h5>
+                    <a href="#" class="text-white fs-4 me-3"><i class="bi bi-telegram"></i></a>
+                    <a href="#" class="text-white fs-4 me-3"><i class="bi bi-vk"></i></a>
+                    <a href="#" class="text-white fs-4"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <small>&copy; 2026 Learn Russian Language School. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="orderModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Request Tutoring Session</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="order-form">
+                        <div class="alert alert-info">You are requesting information for: <strong id="selected-item-name">Course Name</strong></div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Your Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="order-form" class="btn btn-primary">Submit Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
