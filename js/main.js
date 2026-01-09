@@ -116,14 +116,14 @@ function renderTutors() {
 
     filteredTutors.forEach(tutor => {
         const row = `
-                <tr>
+                <tr data-tutorid="${tutor.id}">
                     <td><img src="assets/icons/tutor.svg" width="24" height="24" class="me-2"> ${tutor.name}</td>
                     <td>${tutor.language_level}</td>
                     <td>${tutor.languages_spoken.join(', ')}</td>
                     <td>${tutor.work_experience} years</td>
                     <td>${tutor.price_per_hour}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary">Choose</button>
+                        <button class="btn btn-sm btn-outline-primary request-tutor-btn">Choose</button>
                     </td>
                 </tr>
             `;
@@ -157,6 +157,15 @@ document.getElementById('tutors-list').addEventListener('click', function(e) {
     row.classList.add('table-primary');
 });
 
+document.getElementById('tutors-list').addEventListener('click', (e) => {
+    const btn = e.target.closest('.request-tutor-btn');
+    if (btn) {
+        const tutorId = parseInt(btn.closest('tr').dataset.tutorid);
+        const tutor = allTutors.find(t => t.id === tutorId);
+        openTutorRequestModal(tutor);
+    }
+});
+
 async function onLoad() {
 
     await fetchData();
@@ -170,6 +179,8 @@ async function onLoad() {
 // Event Listeners
 document.querySelector('#courses-list')
     .addEventListener('click', handleCourseOrder);
+
+
 document.querySelector('#course-search-form button')
     .addEventListener('click', handleSearch);
 document.querySelector('#tutor-filter-form button')

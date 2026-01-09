@@ -14,4 +14,9 @@ function showAlert(message, type = 'success') {
             bsAlert.close();
         }
     }, 5000);
+
+    container.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
 }

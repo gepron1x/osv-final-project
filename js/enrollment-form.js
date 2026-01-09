@@ -1,9 +1,9 @@
 
-let currentCourseData = null;
-let editOrder = null;
+let currentCourse = null;
+let courseEditOrder = null;
 
 
-let totalPrice = 0;
+let courseTotalPrice = 0;
 
 function isEarly(date) {
     const diffTime = date.getTime() - new Date().getTime();
@@ -12,11 +12,11 @@ function isEarly(date) {
 }
 
 function calculatePrice() {
-    if (!currentCourseData) return;
+    if (!currentCourse) return;
 
-    const feePerHour = currentCourseData.course_fee_per_hour;
-    const totalHours = currentCourseData.week_length * 
-        currentCourseData.total_length;
+    const feePerHour = currentCourse.course_fee_per_hour;
+    const totalHours = currentCourse.week_length * 
+        currentCourse.total_length;
     let courseCost = feePerHour * totalHours;
 
     const dateValue = document.getElementById('date_start').value;
@@ -57,27 +57,27 @@ function calculatePrice() {
     }
     
     if (form.personalized.checked) {
-        total += (1500 * currentCourseData.total_length);
+        total += (1500 * currentCourse.total_length);
     }
     if (persons >= 5) {
         total *= 0.85;
     }
 
-    totalPrice = total;
+    courseTotalPrice = total;
 
     document.getElementById('total_price').textContent = 
         Math.round(total).toLocaleString('ru-RU');
 }
 
 function updateTimeOptions(selectedDate) {
-    if (!selectedDate || !currentCourseData) return;
+    if (!selectedDate || !currentCourse) return;
 
     const timeSelect = document.getElementById('time_start');
     timeSelect.disabled = false;
     timeSelect.innerHTML = 
     '<option value="" selected disabled>Выберите время...</option>';
 
-    const slots = currentCourseData.start_dates
+    const slots = currentCourse.start_dates
         .filter(dateStr => dateStr.split("T")[0] === selectedDate)
         .map(dateStr => dateStr.split("T")[1].slice(0, 5))
         .sort((a, b) => a.localeCompare(b));
@@ -89,7 +89,7 @@ function updateTimeOptions(selectedDate) {
     });
 
     // Также обновляем дату окончания курса
-    const weeks = currentCourseData.total_length;
+    const weeks = currentCourse.total_length;
     const startDate = new Date(selectedDate);
     const endDate = new Date(
         startDate.getTime() + weeks * 7 * 24 * 60 * 60 * 1000
@@ -99,8 +99,8 @@ function updateTimeOptions(selectedDate) {
 }
 
 function openEnrollmentModal(course, order = null) {
-    editOrder = order;
-    currentCourseData = course;
+    courseEditOrder = order;
+    currentCourse = course;
     
     const form = document.getElementById('enrollment-form');
     form.reset();
@@ -180,9 +180,9 @@ document.getElementById('enrollment-form')
             tutor_id: null,
             date_start: formData.get('date_start'),
             time_start: formData.get('time_start'),
-            duration: currentCourseData.total_length,
+            duration: currentCourse.total_length,
             persons: parseInt(formData.get('persons')),
-            price: totalPrice,
+            price: courseTotalPrice,
             early_registration: isEarly(new Date(formData.get('date_start'))),
             group_enrollment: parseInt(formData.get('persons')) >= 5,
             intensive_course: formData.get('intensive_course') === 'on',
@@ -202,8 +202,8 @@ document.getElementById('enrollment-form')
             let url = `${BASE_URL}/orders`;
             let method = 'POST';
 
-            if (editOrder) {
-                url += `/${editOrder.id}`;
+            if (courseEditOrder) {
+                url += `/${courseEditOrder.id}`;
                 method = 'PUT';
             }
             url += `?api_key=${API_KEY}`;

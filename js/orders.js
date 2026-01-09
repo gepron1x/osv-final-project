@@ -1,5 +1,6 @@
 orders = [];
 courses = [];
+tutors = [];
 
 currentOrder = null;
 
@@ -14,6 +15,7 @@ async function fetchData() {
     try {
         orders = await fetchOrders();
         courses = await fetchCourses();
+        tutors = await fetchTutors();
     } catch (error) {
         showAlert(error.message, 'danger');
     }
@@ -31,8 +33,13 @@ function renderOrders() {
     const pagedItems = orders.slice(start, end);
 
     pagedItems.forEach((order, index) => {
-        const courseObj = courses.find(c => c.id === order.course_id);
-        const nameDisplay = courseObj ? courseObj.name : 'Неизвестный курс';
+        const courseObj = !!order.course_id ? 
+            courses.find(c => c.id === order.course_id) : null;
+        const tutorObj = !!order.tutor_id ? 
+            tutors.find(t => t.id === order.tutor_id) : null;
+
+        const nameDisplay = courseObj ? 
+            courseObj.name : `Tutoring with ${tutorObj.name}`;
         
         const dateDisplay = new Date(order.date_start)
             .toLocaleDateString('ru-RU');
@@ -107,8 +114,18 @@ ordersTable.addEventListener('click', (e) => {
     if (editBtn) {
         const orderId = editBtn.closest('tr').dataset.orderid;
         const order = orders.find(order => order.id == orderId);
-        const course = courses.find(course => course.id == order.course_id);
-        openEnrollmentModal(course, order);
+
+        const courseObj = !!order.course_id ? 
+            courses.find(c => c.id === order.course_id) : null;
+        const tutorObj = !!order.tutor_id ? 
+            tutors.find(t => t.id === order.tutor_id) : null;
+        if (courseObj) {
+            openEnrollmentModal(courseObj, order);
+        }
+
+        if (tutorObj) {
+            openTutorRequestModal(tutorObj, order);
+        }
     }
 });
 
