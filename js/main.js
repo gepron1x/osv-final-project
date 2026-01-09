@@ -143,6 +143,20 @@ function handleTutorSearch() {
     renderTutors();
 }
 
+document.getElementById('tutors-list').addEventListener('click', function(e) {
+    // Находим ближайшую строку <tr>
+    const row = e.target.closest('tr');
+    
+    if (!row) return;
+
+    // Убираем подсветку со всех строк
+    const allRows = this.querySelectorAll('tr');
+    allRows.forEach(r => r.classList.remove('table-primary'));
+
+    // Подсвечиваем текущую строку
+    row.classList.add('table-primary');
+});
+
 async function onLoad() {
 
     await fetchData();
