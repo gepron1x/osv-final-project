@@ -32,7 +32,8 @@ function renderCourses() {
     const pagedItems = filteredCourses.slice(start, end);
 
     if (pagedItems.length === 0) {
-        coursesList.innerHTML = '<div class="col-12 text-center"><p>No courses found.</p></div>';
+        coursesList.innerHTML = 
+        '<div class="col-12 text-center"><p>No courses found.</p></div>';
         return;
     }
 
@@ -42,10 +43,17 @@ function renderCourses() {
                 <div class="card h-100 shadow-sm">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">${course.name}</h5>
-                        <p class="card-text text-muted small">${course.description || 'No description available.'}</p>
+                        <p class="card-text text-muted small">
+                            ${course.description || 'No description available.'}
+                        </p>
                         <div class="mt-auto">
-                            <p class="fw-bold mb-2">Level: <span class="badge bg-info text-dark">${course.level || 'All'}</span></p>
-                            <button class="btn btn-primary w-100 mt-2 order-course-btn">
+                            <p class="fw-bold mb-2">Level: 
+                                <span class="badge bg-info text-dark">
+                                    ${course.level || 'All'}
+                                </span>
+                            </p>
+                            <button class="btn btn-primary 
+                            w-100 mt-2 order-course-btn">
                                 Select Course
                             </button>
                         </div>
@@ -110,20 +118,29 @@ function renderTutors() {
 
     if (filteredTutors.length === 0) {
         container.innerHTML = 
-        '<tr><td colspan="6" class="text-center">No tutors found matching your criteria.</td></tr>';
+        `<tr>
+            <td colspan="6" class="text-center">
+                No tutors found matching your criteria.
+            </td>
+        </tr>`;
         return;
     }
 
     filteredTutors.forEach(tutor => {
         const row = `
                 <tr data-tutorid="${tutor.id}">
-                    <td><img src="assets/icons/tutor.svg" width="24" height="24" class="me-2"> ${tutor.name}</td>
+                    <td>
+                        <img src="assets/icons/tutor.svg" 
+                        width="24" height="24" class="me-2"> 
+                        ${tutor.name}
+                    </td>
                     <td>${tutor.language_level}</td>
                     <td>${tutor.languages_spoken.join(', ')}</td>
                     <td>${tutor.work_experience} years</td>
                     <td>${tutor.price_per_hour}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary request-tutor-btn">Choose</button>
+                        <button class="btn btn-sm btn-outline-primary 
+                        request-tutor-btn">Choose</button>
                     </td>
                 </tr>
             `;
@@ -133,10 +150,14 @@ function renderTutors() {
 
 function handleTutorSearch() {
     const qualFilter = document.getElementById('tutor-qualification').value;
-    const expFilter = parseInt(document.getElementById('tutor-experience').value) || 0;
+    const expFilter = parseInt(
+        document.getElementById('tutor-experience').value
+    ) || 0;
 
     filteredTutors = allTutors.filter(tutor => {
-        const matchesQual = !qualFilter || tutor.language_level.toLowerCase() === qualFilter;
+        const matchesQual = !qualFilter || 
+            tutor.language_level.toLowerCase() === qualFilter;
+            
         const matchesExp = tutor.work_experience >= expFilter;
         return matchesQual && matchesExp;
     });

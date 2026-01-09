@@ -50,13 +50,19 @@ function renderOrders() {
         <tr data-orderid=${order.id}>
             <td>${rowNumber}</td>
             <td><strong>${nameDisplay}</strong></td>
-            <td>${dateDisplay} <span class="text-muted ms-1">(${order.time_start.slice(0, 5)})</span></td>
+            <td>${dateDisplay} 
+                <span class="text-muted ms-1">
+                    (${order.time_start.slice(0, 5)})
+                </span>
+            </td>
             <td>${priceDisplay} ₽</td>
             <td>
-                <button class="btn btn-sm btn-outline-warning me-1 edit-order-btn" title="Редактировать">
+                <button class="btn btn-sm btn-outline-warning me-1 
+                edit-order-btn" title="Edit">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-danger delete-order-btn" title="Удалить">
+                <button class="btn btn-sm btn-outline-danger 
+                delete-order-btn" title="Delete">
                     <i class="bi bi-trash"></i>
                 </button>
             </td>

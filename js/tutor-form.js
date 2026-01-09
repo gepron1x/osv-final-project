@@ -75,13 +75,14 @@ document.getElementById('tutor-request-form')
             return;
         }
         try {
-            let url = `${BASE_URL}/orders?api_key=${API_KEY}`;
+            let url = `${BASE_URL}/orders`;
             let method = 'POST';
             
             if (courseEditOrder) {
-                url = `${BASE_URL}/orders/${courseEditOrder.id}?api_key=${API_KEY}`;
+                url += `/${courseEditOrder.id}`;
                 method = 'PUT';
             }
+            url += `?api_key=${API_KEY}`;
             
             const response = await fetch(url, {
                 method: method,

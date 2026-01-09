@@ -139,7 +139,8 @@ function openEnrollmentModal(course, order = null) {
     if (order) {
         dateSelect.value = order.date_start.split('T')[0];
         updateTimeOptions(dateSelect.value);
-        document.getElementById('time_start').value = order.time_start.slice(0, 5);
+        document.getElementById('time_start')
+            .value = order.time_start.slice(0, 5);
         document.getElementById('persons').value = order.persons;
 
         // Кол-во человек
