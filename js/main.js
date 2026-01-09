@@ -1,7 +1,4 @@
 
-const API_KEY = "e5992e19-c0fe-4ac0-9e07-8ccaa279890b";
-const BASE_URL = "http://exam-api-courses.std-900.ist.mospolytech.ru/api";
-
 let allCourses = [];
 let filteredCourses = [];
 let currentPage = 1;
@@ -15,31 +12,13 @@ const coursesList = document.getElementById('courses-list');
 const paginationContainer = document.getElementById('courses-pagination');
 const searchForm = document.getElementById('course-search-form');
 
-function showAlert(message, type = 'success') {
-    const container = document.getElementById('alerts-container');
-    const alert = `
-<div class="alert alert-${type} alert-dismissible fade show" role="alert">
-    ${message}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-    `;
-    container.innerHTML = alert;
-    setTimeout(() => {
-        const alertElement = document.querySelector('.alert');
-        if (alertElement) {
-            const bsAlert = new bootstrap.Alert(alertElement);
-            bsAlert.close();
-        }
-    }, 5000);
-}
-
-
-async function fetchCourses() {
+async function fetchData() {
     try {
-        const response = await fetch(`${BASE_URL}/courses?api_key=${API_KEY}`);
-        if (!response.ok) throw new Error('Failed to fetch courses');
-        allCourses = await response.json();
+        allCourses = await fetchCourses();
         filteredCourses = [...allCourses];
+
+        allTutors = await fetchTutors();
+        filteredTutors = [...allTutors];
     } catch (error) {
         showAlert(error.message, 'danger');
     }
@@ -105,7 +84,9 @@ function handleSearch() {
 
     filteredCourses = allCourses.filter(course => {
         const matchesName = course.name.toLowerCase().includes(nameQuery);
-        const matchesLevel = levelQuery === "" || course.level === levelQuery;
+        console.log(`${course.level} ${levelQuery}`);
+        let level = course.level.toLowerCase();
+        const matchesLevel = levelQuery === "" || level === levelQuery;
         return matchesName && matchesLevel;
     });
 
@@ -121,16 +102,6 @@ function handleCourseOrder(event) {
     const course = allCourses.find(course => courseId == course.id);
     console.log(courseId);
     openEnrollmentModal(course);
-}
-
-async function fetchTutors() {
-    try {
-        const response = await fetch(`${BASE_URL}/tutors?api_key=${API_KEY}`);
-        allTutors = await response.json();
-        filteredTutors = [...allTutors];
-    } catch (error) {
-        showAlert('Error loading tutors', 'danger');
-    }
 }
 
 function renderTutors() {
@@ -165,8 +136,6 @@ function handleTutorSearch() {
     const expFilter = parseInt(document.getElementById('tutor-experience').value) || 0;
 
     filteredTutors = allTutors.filter(tutor => {
-        console.log(qualFilter);
-        console.log(tutor.language_level);
         const matchesQual = !qualFilter || tutor.language_level.toLowerCase() === qualFilter;
         const matchesExp = tutor.work_experience >= expFilter;
         return matchesQual && matchesExp;
@@ -176,8 +145,7 @@ function handleTutorSearch() {
 
 async function onLoad() {
 
-    await fetchCourses();
-    await fetchTutors();
+    await fetchData();
 
     renderCourses();
     renderPagination();

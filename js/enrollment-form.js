@@ -1,5 +1,7 @@
 
 let currentCourseData = null;
+let editOrder = null;
+
 
 let totalPrice = 0;
 
@@ -67,7 +69,37 @@ function calculatePrice() {
         Math.round(total).toLocaleString('ru-RU');
 }
 
-function openEnrollmentModal(course) {
+function updateTimeOptions(selectedDate) {
+    if (!selectedDate || !currentCourseData) return;
+
+    const timeSelect = document.getElementById('time_start');
+    timeSelect.disabled = false;
+    timeSelect.innerHTML = 
+    '<option value="" selected disabled>Выберите время...</option>';
+
+    const slots = currentCourseData.start_dates
+        .filter(dateStr => dateStr.split("T")[0] === selectedDate)
+        .map(dateStr => dateStr.split("T")[1].slice(0, 5))
+        .sort((a, b) => a.localeCompare(b));
+
+    slots.forEach(time => {
+        timeSelect.insertAdjacentHTML('beforeend', 
+            `<option value="${time}">${time}</option>`
+        );
+    });
+
+    // Также обновляем дату окончания курса
+    const weeks = currentCourseData.total_length;
+    const startDate = new Date(selectedDate);
+    const endDate = new Date(
+        startDate.getTime() + weeks * 7 * 24 * 60 * 60 * 1000
+    );
+    document.getElementById('display_end_date').textContent = 
+        endDate.toLocaleDateString('ru-RU');
+}
+
+function openEnrollmentModal(course, order = null) {
+    editOrder = order;
     currentCourseData = course;
     
     const form = document.getElementById('enrollment-form');
@@ -103,39 +135,31 @@ function openEnrollmentModal(course) {
     timeSelect.disabled = true;
     timeSelect.innerHTML = 
     '<option value="" selected disabled>Choose date first</option>';
+
+    if (order) {
+        dateSelect.value = order.date_start.split('T')[0];
+        updateTimeOptions(dateSelect.value);
+        document.getElementById('time_start').value = order.time_start.slice(0, 5);
+        document.getElementById('persons').value = order.persons;
+
+        // Кол-во человек
+        document.getElementById('persons').value = order.persons;
+
+        // Чекбоксы
+        form.intensive_course.checked = !!order.intensive_course;
+        form.supplementary.checked = !!order.supplementary;
+        form.personalized.checked = !!order.personalized;
+        form.excursions.checked = !!order.excursions;
+        form.assessment.checked = !!order.assessment;
+        form.interactive.checked = !!order.interactive;
+    }
     calculatePrice();
     
     new bootstrap.Modal(document.getElementById('enrollmentModal')).show();
 }
 
 document.getElementById('date_start').addEventListener('change', function(e) {
-    const selectedDate = e.target.value;
-    if (!selectedDate) return;
-
-    const weeks = currentCourseData.total_length;
-    const startDate = new Date(selectedDate);
-
-    const endDate = new Date(
-        startDate.getTime() + (weeks * 7 * 24 * 60 * 60 * 1000)
-    );
-    document.getElementById('display_end_date').textContent = 
-        endDate.toLocaleDateString('ru-RU');
-
-    
-    const timeSelect = document.getElementById('time_start');
-    timeSelect.disabled = false;
-    timeSelect.innerHTML = 
-    '<option value="" selected disabled>Select time...</option>';
-    
-    const slots = currentCourseData.start_dates
-        .filter(dateStr => dateStr.split("T")[0] === selectedDate)
-        .map(dateStr => dateStr.split("T")[1].slice(0, 5)).sort();
-
-    slots.forEach(time => {
-        timeSelect.insertAdjacentHTML('beforeend', 
-            `<option value="${time}">${time}</option>`);
-    });
-
+    updateTimeOptions(e.target.value);
     calculatePrice();
 });
 
@@ -175,8 +199,17 @@ document.getElementById('enrollment-form')
         }
 
         try {
-            const response = await fetch(`${BASE_URL}/orders?api_key=${API_KEY}`, {
-                method: 'POST',
+            let url = `${BASE_URL}/orders`;
+            let method = 'POST';
+
+            if (editOrder) {
+                url += `/${editOrder.id}`;
+                method = 'PUT';
+            }
+            url += `?api_key=${API_KEY}`;
+
+            const response = await fetch(url, {
+                method: method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData)
             });
@@ -186,6 +219,9 @@ document.getElementById('enrollment-form')
                 const modalInstance = bootstrap.Modal.getInstance(
                     document.getElementById('enrollmentModal')
                 );
+                if (typeof refreshEnrollments === 'function') {
+                    await refreshEnrollments();
+                } 
                 modalInstance.hide();
                 showAlert('Application submitted successfully!', 'success');
             } else {
